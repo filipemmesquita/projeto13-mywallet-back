@@ -20,6 +20,23 @@ export async function createUser(req, res) {
     return res.sendStatus(422);
   }
 
+  try {
+    console.log(user)
+    const nameAlreadyExistis= await db.collection('users').findOne({name:user.name})
+    const emailAlreadyExistis= await db.collection('users').findOne({email:user.email})
+    console.log(emailAlreadyExistis)
+    if(nameAlreadyExistis||emailAlreadyExistis){
+        res.sendStatus(422);
+        console.log("já existe")
+        return;
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  } 
+  
+
+
   const encryptedPassword = bcrypt.hashSync(user.password, 10);
 
   await db.collection('users').insertOne({ ...user, password: encryptedPassword });

@@ -47,6 +47,6 @@ export async function createEntry(req, res) {
   }
 
 
-  await db.collection('entries').insertOne({ ...entry, userId: session.userId, date:dayjs().format('DD/MM/YYYY') });
+  await db.collection('entries').insertOne({ ...entry, userId: session.userId, date:dayjs(new Date(),'DD/MM/YYYY').format('DD/MM/YYYY') });
   res.status(201).send('Entrada criada com sucesso');
 }
