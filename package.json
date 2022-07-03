@@ -2,9 +2,10 @@
   "name": "projeto13-mywallet-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "./src/index.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "test": "nodemon ./src/index.js"
   },
   "author": "",
   "license": "ISC",
