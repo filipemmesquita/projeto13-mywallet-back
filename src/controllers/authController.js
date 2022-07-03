@@ -28,7 +28,7 @@ export async function createUser(req, res) {
 
 export async function loginUser(req, res) {
   const user = req.body;
-
+  console.log(user)
   const userSchema = joi.object({
     email: joi.string().email().required(),
     password: joi.string().required()
@@ -37,16 +37,16 @@ export async function loginUser(req, res) {
   const { error } = userSchema.validate(user);
 
   if (error) {
+    console.log("joi error")
     return res.sendStatus(422);
   }
 
-  //Preciso pegar o user pelo email
   const DBUser = await db.collection('users').findOne({ email: user.email });
-
-  if (DBUser && bcrypt.compareSync(user.password, user.password)) {
+  console.log(DBUser)
+  if (DBUser && bcrypt.compareSync(user.password, DBUser.password)) {
     const token = uuid();
 
-    await db.collection('sessoes').insertOne({
+    await db.collection('sessions').insertOne({
       token,
       userId: user._id
     });
