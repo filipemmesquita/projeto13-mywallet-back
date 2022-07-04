@@ -13,12 +13,23 @@ export async function getEntry(req, res) {
     return res.sendStatus(401);
   }
 
-  const entries = await db
+  const DBentries = await db
     .collection('entries')
     .find({ userId: session.userId })
     .toArray();
 
-  res.send(entries);
+  const entries= DBentries.filter(entry=>{
+    const currentMonth=dayjs().format('MM');
+    const currentYear=dayjs().format('YYYY');
+    console.log(entry.date.substring(3,5) + ' '+currentMonth)
+    if(entry.date.substring(3,5)===currentMonth && entry.date.substring(6,10)===currentYear){
+      return true;
+    }
+    else{
+      return false;
+    }
+  });
+  res.send(entries.reverse());
 }
 
 export async function createEntry(req, res) {
