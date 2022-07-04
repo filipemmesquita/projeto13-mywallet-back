@@ -1,5 +1,7 @@
 import { db, objectId } from '../dbStrategy/mongo.js';
 import joi from 'joi';
+import dayjs from 'dayjs';
+
 
 export async function getEntry(req, res) {
   const { authorization } = req.headers;
@@ -45,6 +47,6 @@ export async function createEntry(req, res) {
   }
 
 
-  await db.collection('entries').insertOne({ ...entry, userId: session.userId });
+  await db.collection('entries').insertOne({ ...entry, userId: session.userId, date:dayjs().format('DD/MM/YYYY') });
   res.status(201).send('Entrada criada com sucesso');
 }

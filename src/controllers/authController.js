@@ -52,7 +52,7 @@ export async function loginUser(req, res) {
       userId: DBUser._id
     });
 
-    return res.status(201).send({ token });
+    return res.status(201).send({ token, name:DBUser.name });
   } else {
     return res.status(401).send('Senha ou email incorretos!');
   }
