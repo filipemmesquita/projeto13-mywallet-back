@@ -74,3 +74,18 @@ export async function loginUser(req, res) {
     return res.status(401).send('Senha ou email incorretos!');
   }
 }
+
+export async function logoutUser(req,res){
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+
+  const session = await db.collection('sessions').findOne({ token });
+
+  if (!session) {
+    return res.sendStatus(401);
+  }
+
+
+  await db.collection('sessions').deleteMany({ _id: session._id });
+  res.status(201).send('Session ended successfully');
+}
