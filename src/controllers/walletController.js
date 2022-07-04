@@ -21,7 +21,6 @@ export async function getEntry(req, res) {
   const entries= DBentries.filter(entry=>{
     const currentMonth=dayjs().format('MM');
     const currentYear=dayjs().format('YYYY');
-    console.log(entry.date.substring(3,5) + ' '+currentMonth)
     if(entry.date.substring(3,5)===currentMonth && entry.date.substring(6,10)===currentYear){
       return true;
     }
@@ -51,7 +50,6 @@ export async function createEntry(req, res) {
 
   const session = await db.collection('sessions').findOne({ token });
 
-  console.log(session)
 
   if (!session) {
     return res.sendStatus(401);

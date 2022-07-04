@@ -5,7 +5,6 @@ import joi from 'joi';
 
 export async function createUser(req, res) {
   const user = req.body;
-  console.log(user)
 
   const userSchema = joi.object({
     name: joi.string().required(),
@@ -16,18 +15,14 @@ export async function createUser(req, res) {
   const { error } = userSchema.validate(user);
 
   if (error) {
-    console.log("joi error")
     return res.sendStatus(422);
   }
 
   try {
-    console.log(user)
     const nameAlreadyExistis= await db.collection('users').findOne({name:user.name})
     const emailAlreadyExistis= await db.collection('users').findOne({email:user.email})
-    console.log(emailAlreadyExistis)
     if(nameAlreadyExistis||emailAlreadyExistis){
         res.sendStatus(422);
-        console.log("já existe")
         return;
     }
   } catch (error) {
@@ -45,7 +40,6 @@ export async function createUser(req, res) {
 
 export async function loginUser(req, res) {
   const user = req.body;
-  console.log(user)
   const userSchema = joi.object({
     email: joi.string().email().required(),
     password: joi.string().required()
@@ -54,12 +48,10 @@ export async function loginUser(req, res) {
   const { error } = userSchema.validate(user);
 
   if (error) {
-    console.log("joi error")
     return res.sendStatus(422);
   }
 
   const DBUser = await db.collection('users').findOne({ email: user.email });
-  console.log(DBUser)
   if (DBUser && bcrypt.compareSync(user.password, DBUser.password)) {
     const token = uuid();
 
